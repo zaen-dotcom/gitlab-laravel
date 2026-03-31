@@ -5,14 +5,17 @@ on:
 
 jobs:
   deploy:
-    runs-on: self-hosted 
+    runs-on: self-hosted
     steps:
-      - uses: actions/checkout@v3
-      
-      - name: Jalankan Deploy Script Lokal
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Jalankan Deploy Script di Fedora
         run: |
-          # Perintah ini akan dijalankan langsung di Fedora kamu
-          cd /var/www/html/gitlab-laravel || exit
+          # Masuk ke folder proyek di home kamu
+          cd /home/chnoxi/gitlab-laravel || exit
+          
+          # Jalankan perintah deploy standar
           git pull origin main
           composer install --no-dev
           php artisan migrate --force
