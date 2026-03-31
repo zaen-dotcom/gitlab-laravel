@@ -1,0 +1,15 @@
+stages:
+  - build
+  - deploy
+
+build_job:
+  stage: build
+  script:
+    - composer install
+    - php artisan key:generate
+
+deploy_job:
+  stage: deploy
+  script:
+    - echo "Deploying to Fedora..."
+    - rsync -avz . /var/www/html/gitlab-laravel
