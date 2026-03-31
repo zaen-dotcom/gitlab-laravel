@@ -5,17 +5,14 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted 
     steps:
       - uses: actions/checkout@v3
-      - name: Deploy via SSH
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.HOST }}
-          username: chnoxi
-          key: ${{ secrets.DEPLOY_KEY }}
-          script: |
-            cd /var/www/html/gitlab-laravel
-            git pull origin main
-            composer install
-            php artisan migrate --force
+      
+      - name: Jalankan Deploy Script Lokal
+        run: |
+          # Perintah ini akan dijalankan langsung di Fedora kamu
+          cd /var/www/html/gitlab-laravel || exit
+          git pull origin main
+          composer install --no-dev
+          php artisan migrate --force
