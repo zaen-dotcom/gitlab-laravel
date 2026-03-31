@@ -12,10 +12,19 @@ jobs:
 
       - name: Jalankan Deploy Script di Fedora
         run: |
-          # Masuk ke folder proyek di home kamu
-          cd /home/chnoxi/gitlab-laravel || exit
+          # 1. Pindah ke folder project di /var/www/
+          cd /var/www/gitlab-laravel || exit
           
-          # Jalankan perintah deploy standar
+          # 2. Tarik kode terbaru
           git pull origin main
+          
+          # 3. Install dependencies & migrasi
           composer install --no-dev
           php artisan migrate --force
+          
+          # 4. Optimasi (Penting untuk Laravel di Production/Nginx)
+          php artisan config:cache
+          php artisan route:cache
+          
+          # 5. Pastikan permission tetap aman (Opsional tapi disarankan)
+          sudo chmod -R 775 storage bootstrap/cache
