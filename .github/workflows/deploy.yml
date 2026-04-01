@@ -12,7 +12,7 @@ jobs:
 
       - name: Jalankan Deploy Script di Fedora
         run: |
-          # 1. Pindah ke folder project di /var/www/
+          # 1. Pindah ke folder project
           cd /var/www/gitlab-laravel || exit
           
           # 2. Tarik kode terbaru
@@ -22,9 +22,11 @@ jobs:
           composer install --no-dev
           php artisan migrate --force
           
-          # 4. Optimasi (Penting untuk Laravel di Production/Nginx)
+          # 4. Optimasi Laravel
           php artisan config:cache
           php artisan route:cache
+          php artisan view:clear
           
-          # 5. Pastikan permission tetap aman (Opsional tapi disarankan)
-          sudo chmod -R 775 storage bootstrap/cache
+          # 5. Permission (HAPUS SUDO)
+          # Karena folder ini milik user chnoxi, kita tidak butuh sudo untuk chmod
+          chmod -R 775 storage bootstrap/cache
